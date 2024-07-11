@@ -7,11 +7,11 @@
     "start": "react-scripts start"
   },
   "dependencies": {
-    "react-scripts": "^5.0.1",
     "babel-loader": "^8.2.4",
-    "webpack-dev-server": "^4.9.3",
     "html-webpack-plugin": "^5.5.0",
-    "react-router-dom": "^6.4.3"
+    "react-router-dom": "^6.24.1",
+    "react-scripts": "^5.0.1",
+    "webpack-dev-server": "^4.9.3"
   },
   "browserslist": {
     "production": [
@@ -28,7 +28,6 @@
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
   "version": "1.0.0",
   "main": "index.js",
-  "devDependencies": {},
   "keywords": [],
   "author": "",
   "license": "ISC"

@@ -4,10 +4,9 @@ from flask_migrate import Migrate
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
-import sys
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///realestate.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.json.compact = False
 
@@ -24,12 +23,23 @@ CORS(app)
 engine = None
 SessionLocal = None
 
+
+
+# from models import Property, User, Agent, Booking
+from routes import PropertyList, PropertyDetail, UserList, UserDetail, AgentList, AgentDetail, BookingList, BookingDetail
+
+api.add_resource(PropertyList, '/api/properties')
+api.add_resource(PropertyDetail, '/api/properties/<int:id>')
+
+api.add_resource(UserList, '/api/users')
+api.add_resource(UserDetail, '/api/users/<int:id>')
+
+api.add_resource(AgentList, '/api/agents')
+api.add_resource(AgentDetail, '/api/agents/<int:id>')
+
+api.add_resource(BookingList, '/api/bookings')
+api.add_resource(BookingDetail, '/api/bookings/<int:id>')
+
+
 if __name__ == '__main__':
-  app.run(debug=True)
-
-from models import Property, User
-
-from routes import property_routes, user_routes
-
-api.add_resource(property_routes.PropertyList, '/api/properties')
-api.add_
+    app.run(debug=True)

@@ -11,7 +11,7 @@ engine = create_engine(DATABASE_URL)
 # Initialize session maker
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# Define models
+# models
 class Property(Base):
     __tablename__ = "properties"
 

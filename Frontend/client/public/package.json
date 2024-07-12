@@ -10,9 +10,8 @@
     "axios": "^1.7.2",
     "babel-loader": "^8.2.4",
     "html-webpack-plugin": "^5.5.0",
-    "react-router-dom": "^6.24.1",
+    "react-router-dom": "^6.4.3",
     "react-scripts": "^5.0.1",
-    "styled-components": "^6.1.11",
     "webpack-dev-server": "^4.9.3"
   },
   "browserslist": {

@@ -7,10 +7,11 @@ from datetime import datetime
 Base = declarative_base()
 DATABASE_URL = 'sqlite:///realestate.db'
 engine = create_engine(DATABASE_URL)
+
+# Initialize session maker
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-db_session = SessionLocal()
 
-
+# Define models
 class Property(Base):
     __tablename__ = "properties"
 
@@ -21,6 +22,7 @@ class Property(Base):
     zip_code = Column(String(10), nullable=False)
     price = Column(Float, nullable=False)
     description = Column(Text, nullable=True)
+    bookings = relationship("Booking", back_populates="property")
 
     def __repr__(self):
         return f"Property('{self.address}', '{self.city}', '{self.state}', '{self.zip_code}', {self.price})"
@@ -33,6 +35,7 @@ class User(Base):
     email = Column(String(100), nullable=False, unique=True)
     password = Column(String(120), nullable=False)
     role = Column(String(20), nullable=False)
+    bookings = relationship("Booking", back_populates="user")
 
     def __repr__(self):
         return f"User('{self.name}', '{self.email}')"
@@ -64,23 +67,14 @@ class Booking(Base):
     def __repr__(self):
         return f"Booking('{self.user_id}', '{self.property_id}', '{self.booking_date}', '{self.status}')"
 
-# Establish relationships for the User and Property tables
-User.bookings = relationship("Booking", order_by=Booking.id, back_populates="user")
-Property.bookings = relationship("Booking", order_by=Booking.id, back_populates="property")
-
-# Create the engine and sessionmaker
-DATABASE_URL = 'sqlite:///realestate.db'
-engine = create_engine(DATABASE_URL)
-Base.metadata.create_all(engine)
-SessionLocal = sessionmaker(bind=engine)
-
-# SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-# Create tables if they don't exist
+# Create tables
 Base.metadata.create_all(engine)
 
+# Seed the database
 def seed_database(session):
     fake = Faker()
+
+    # Seed properties
     for _ in range(10):
         property = Property(
             address=fake.street_address(),
@@ -92,15 +86,17 @@ def seed_database(session):
         )
         session.add(property)
 
+    # Seed users
     for _ in range(5):
         user = User(
             name=fake.name(),
             email=fake.email(),
-            password=fake.password(),  # Generate a random password
-            role='customer'  # Assign a default role
+            password=fake.password(),
+            role='customer'
         )
         session.add(user)
 
+    # Seed agents
     for _ in range(3):
         agent = Agent(
             name=fake.name(),
@@ -110,6 +106,7 @@ def seed_database(session):
         )
         session.add(agent)
 
+    # Seed bookings
     for _ in range(5):
         booking = Booking(
             user_id=fake.random_int(1, 5),
@@ -122,6 +119,6 @@ def seed_database(session):
     # Commit changes to the database
     session.commit()
 
-# Seed the database
+# Run seeding
 with SessionLocal() as session:
     seed_database(session)
